@@ -36,19 +36,19 @@ class TextClassification(BaseTask):
             net=Categorical('bert_12_768_12'),
             pretrained_dataset=Categorical('book_corpus_wiki_en_uncased',
                                            'openwebtext_book_corpus_wiki_en_uncased'),
-            lr=Real(2e-05, 2e-04, log=True),
-            warmup_ratio=0.01,
+            lr=Real(3e-5, 3e-4, log=True),
+            warmup_ratio=0.1,
             lr_scheduler='cosine',
-            log_interval=100,
-            seed=0,
+            log_interval=10,
+            seed=2,
             batch_size=32,
-            dev_batch_size=32,
+            dev_batch_size=8,
             max_len=128,
             dtype='float32',
             epochs=3,
             epsilon=1e-6,
-            accumulate=1,
-            early_stop=False,
+            accumulate=None,
+            early_stop=None,
             nthreads_per_trial=4,
             ngpus_per_trial=1,
             hybridize=True,
@@ -99,8 +99,8 @@ class TextClassification(BaseTask):
             Small number.
         accumulate : int
             How often to accumulate losses.
-        early_stop : bool
-            Whether to utilize early stopping during training to avoid overfitting.
+        early_stop : int
+            Whether to utilize early stopping during training to avoid overfitting. The provided value is the patience.
         num_trials : int
             Maximal number of hyperparameter configurations to try out.
         nthreads_per_trial : int

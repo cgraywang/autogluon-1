@@ -94,12 +94,15 @@ class TextClassificationPredictor(Classifier):
         net = self.model
         if isinstance(dataset, AutoGluonObject):
             dataset = dataset.init()
-        if isinstance(dataset, AbstractGlueTask):
+        if isinstance(dataset, AbstractCustomTask):
             dataset = dataset.get_dataset('dev')
+        if isinstance(dataset, AbstractGlueTask):
+            metric = dataset.get_metric()
+            dataset = dataset.get_dataset('org_dev')
         if isinstance(ctx, list):
             ctx = ctx[0]
 
-        metric = mx.metric.Accuracy()
+        # metric = mx.metric.Accuracy()
         dataset = dataset.transform(self.transform)
         vocab = self.transform.vocab
         pad_val = vocab[vocab.padding_token]
